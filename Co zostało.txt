@@ -1,11 +1,10 @@
-Obsługa serwa +
+﻿Obsługa serwa +
 + wymyślić komunikat ["SERVO 15"]
 + obsługa komunikatów po stronie Arduino w loop()
 + reset położenia serwa na Game Over
 
-Obsługa diody
-- wykrywać rosnący licznik po stronie Arduino w loop()
-- metoda zapalania i gaszenia diody po stronie Arduino
+Obsługa diody +
++ wykrywać rosnący licznik po stronie Arduino w loop()
 
 Wymyślić obsługę rozpoczęcia gry
 - tak żeby nie dało się włączyć gry bez podłączonego kompa

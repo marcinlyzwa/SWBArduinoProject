@@ -4,6 +4,7 @@
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 Servo servo;
 char napis[16];
+int vals[4] = {0, 0, 0, 0};
 
 
 void guzik() {
@@ -13,6 +14,8 @@ void guzik() {
 
 void setup() {
   Serial.begin(9600);
+
+  pinMode(13, OUTPUT);
 
   pinMode(11, OUTPUT);
   servo.attach(11);
@@ -36,6 +39,8 @@ void loop() {
   readLine(napis);  
 
   if (isGameOver(napis)) {
+    servo.write(0);
+
     lcd.clear();
     lcd.setCursor(0,0);
     readLine(napis);
@@ -48,6 +53,16 @@ void loop() {
     servo.write(extractServoValue(napis));
   } 
   else {
+    vals[3] = vals[2];
+    vals[2] = vals[1];
+    vals[1] = vals[0];
+    vals[0] = extractValue(napis);
+
+    if (vals[0] < vals[1] && vals[1] < vals[2] && vals[2] < vals[3])
+      digitalWrite(13, HIGH);
+    else
+      digitalWrite(13, LOW);
+
     lcd.setCursor(0,1);
     lcd.print(napis);
   }
@@ -100,10 +115,11 @@ void readLine(char * napis) {
 }
 
 boolean isGameOver(char * napis) {
-  
+
   char napisOver[4] = {
-    'O', 'V', 'E', 'R'  };
-    
+    'O', 'V', 'E', 'R'
+  };
+
   boolean over = true;
   for (int i = 0; i<4; ++i)
     over = over && napis[i] == napisOver[i];
@@ -112,10 +128,11 @@ boolean isGameOver(char * napis) {
 }
 
 boolean isSerwoOrder(char * napis) {
-  
+
   char napisSerwo[6] = {
-    'S', 'E', 'R', 'V', 'O', ' ' };
-    
+    'S', 'E', 'R', 'V', 'O', ' ' 
+  };
+
   boolean servo = true;
   for (int i = 0; i<6; ++i)
     servo = servo && napis[i] == napisSerwo[i];
@@ -123,15 +140,20 @@ boolean isSerwoOrder(char * napis) {
   return servo;
 }
 
-int extractServoValue(char * napis) {
+int extractValue(char * napis) {
   int value = 0;
-  
-  int i = 6;
-  while (napis[i] >= '0' && napis[i] <= '9') {
+
+  int i = 0;
+  while (i < 16 && napis[i] >= '0' && napis[i] <= '9') {
     value *= 10;
     value += napis[i] - '0';
     ++i;
   }
-  
+
   return value;
 }
+
+int extractServoValue(char * napis) {
+  return extractValue(& napis[6]);
+}
+
