@@ -13,24 +13,39 @@ void guzik() {
 
 
 void setup() {
+  // Hardware init
+  // USB/COM
   Serial.begin(9600);
-
+  // Diode
   pinMode(13, OUTPUT);
-
+  // Button
+  pinMode(A0, INPUT);
+  // Servo timer
   pinMode(11, OUTPUT);
   servo.attach(11);
   servo.write(0);
-
-  pinMode(A0, INPUT);
-  attachInterrupt(0, guzik, FALLING);
-
+  // LCD Screen
   lcd.begin(16,2);
+  
+  // Initiating connection with PC
+  lcd.clear();
+  lcd.print(" Waiting for a  ");
+  lcd.setCursor(0,1);
+  lcd.print(" USB connection ");
+  
+  readLine(napis);
+  while(!isConnOpening(napis))
+    readLine(napis);
+
+  // Starting the main program
   lcd.clear();
   lcd.print("    The Game    ");
   lcd.setCursor(0,1);
   lcd.print("    Welcome!    ");
   delay(2000);
 
+  attachInterrupt(0, guzik, FALLING);
+  
   lcd.clear();
   startNewGame();
 }
@@ -114,42 +129,42 @@ void readLine(char * napis) {
     napis[i]=0;
 }
 
-boolean isGameOver(char * napis) {
+boolean compareStrings(char * strA, char * strB, int length) {
+  boolean equal = true;
+  for (int i = 0; i<length; ++i)
+    equal = equal && strA[i] == strB[i];
+  return equal;
+}
 
+boolean isConnOpening(char * napis) {
+  char napisOpening[9] = {
+    'G', 'R', 'E', 'E', 'T', 'I', 'N', 'G', 'S'
+  };
+  return compareStrings(napisOpening, napis, 9);
+}
+
+boolean isGameOver(char * napis) {
   char napisOver[4] = {
     'O', 'V', 'E', 'R'
   };
-
-  boolean over = true;
-  for (int i = 0; i<4; ++i)
-    over = over && napis[i] == napisOver[i];
-
-  return over;
+  return compareStrings(napisOver, napis, 4);
 }
 
 boolean isSerwoOrder(char * napis) {
-
   char napisSerwo[6] = {
     'S', 'E', 'R', 'V', 'O', ' ' 
   };
-
-  boolean servo = true;
-  for (int i = 0; i<6; ++i)
-    servo = servo && napis[i] == napisSerwo[i];
-
-  return servo;
+  return compareStrings(napisSerwo, napis, 6);
 }
 
 int extractValue(char * napis) {
   int value = 0;
-
   int i = 0;
   while (i < 16 && napis[i] >= '0' && napis[i] <= '9') {
     value *= 10;
     value += napis[i] - '0';
     ++i;
   }
-
   return value;
 }
 

@@ -3,14 +3,17 @@
 + obsługa komunikatów po stronie Arduino w loop()
 + reset położenia serwa na Game Over
 
+
 Obsługa diody +
 + wykrywać rosnący licznik po stronie Arduino w loop()
 
-Wymyślić obsługę rozpoczęcia gry
-- tak żeby nie dało się włączyć gry bez podłączonego kompa
-- np. program Javowy po wybraniu portu COM wysyła komunikat do Arduino, 
-  że jest gotowy - Arduino dopiero zaczyna swoją pracę. 
-  (użyć readLine() w setup)
+
+Wymyślić obsługę rozpoczęcia gry +
++ tak żeby nie dało się włączyć gry bez podłączonego kompa
+Arduino przy starcie wyświetla powiadomienie "Waiting for a USB connection"
+i czeka na linię "GREETINGS" z Seriala. Po otrzymaniu tego komunikatu 
+startuje gra.
+
 
 Java, GUI - gra
 - Wybór portu COM
@@ -19,16 +22,20 @@ Java, GUI - gra
 - można pomyśleć o czymś takim jak dioda z Arduino w oknie gry (tło, ikona)
 - opcja wyjścia z gry przed zakończeniem czasu?
 
+
 Trzeba pamiętać o synchronizacji wątków, które wysyłają komunikaty do Arduino
 (timer i update licznika gry)!!
 
+
 Wymyślić jak przechodzimy do panelu kontrolnego
+
 
 Protokół panelu kontrolnego
 - ustalić komunikaty dla wszystkich akcji
 - ogólny sposób przesyłania komunikatów z Javy
 - poszczególne metody dla każdego komunikatu
 - obsługa komunikatów po stronie Arduino
+
 
 Java, GUI - panel kontrolny
 - podpiąć kontrolki do poszczególnych metod
