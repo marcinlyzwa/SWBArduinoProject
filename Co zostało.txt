@@ -1,0 +1,36 @@
+Obs³uga serwa
+- wymyœliæ komunikat
+- obs³uga komunikatów po stronie Arduino w loop()
+- reset po³o¿enia serwa na Game Over
+
+Obs³uga diody
+- wykrywaæ rosn¹cy licznik po stronie Arduino w loop()
+- metoda zapalania i gaszenia diody po stronie Arduino
+
+Wymyœliæ obs³ugê rozpoczêcia gry
+- tak ¿eby nie da³o siê w³¹czyæ gry bez pod³¹czonego kompa
+- np. program Javowy po wybraniu portu COM wysy³a komunikat do Arduino, 
+  ¿e jest gotowy - Arduino dopiero zaczyna swoj¹ pracê. 
+  (u¿yæ readLine() w setup)
+
+Java, GUI - gra
+- Wybór portu COM
+- zdarzeniowa obs³uga licznika w grze
+- timer - wyœwietlanie i komunikaty do Arduino
+- mo¿na pomyœleæ o czymœ takim jak dioda z Arduino w oknie gry (t³o, ikona)
+- opcja wyjœcia z gry przed zakoñczeniem czasu?
+
+Trzeba pamiêtaæ o synchronizacji w¹tków, które wysy³aj¹ komunikaty do Arduino
+(timer i update licznika gry)!!
+
+Wymyœliæ jak przechodzimy do panelu kontrolnego
+
+Protokó³ panelu kontrolnego
+- ustaliæ komunikaty dla wszystkich akcji
+- ogólny sposób przesy³ania komunikatów z Javy
+- poszczególne metody dla ka¿dego komunikatu
+- obs³uga komunikatów po stronie Arduino
+
+Java, GUI - panel kontrolny
+- podpi¹æ kontrolki do poszczególnych metod
+- obs³uga powrotu do gry
