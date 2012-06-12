@@ -16,11 +16,15 @@ void setup() {
   // Hardware init
   // USB/COM
   Serial.begin(9600);
+<<<<<<< HEAD
   // Diode
   pinMode(13, OUTPUT);
   // Button
   pinMode(A0, INPUT);
   // Servo timer
+=======
+  
+>>>>>>> parent of 8e01450... Obsługa serva po stronie Arduino
   pinMode(11, OUTPUT);
   servo.attach(11);
   servo.write(0);
@@ -65,7 +69,7 @@ void loop() {
     startNewGame();
   } 
   else if (isSerwoOrder(napis)) {
-    servo.write(extractServoValue(napis));
+    
   } 
   else {
     vals[3] = vals[2];
@@ -145,6 +149,7 @@ boolean isConnOpening(char * napis) {
 
 boolean isGameOver(char * napis) {
   char napisOver[4] = {
+<<<<<<< HEAD
     'O', 'V', 'E', 'R'
   };
   return compareStrings(napisOver, napis, 4);
@@ -172,3 +177,14 @@ int extractServoValue(char * napis) {
   return extractValue(& napis[6]);
 }
 
+=======
+    'O', 'V', 'E', 'R'      };
+  boolean over = true;
+
+  for (int i = 0; i<4; i++)
+    over = over && napis[i] == napisOver[i];
+
+  return over;
+}
+
+>>>>>>> parent of 8e01450... Obsługa serva po stronie Arduino

@@ -48,6 +48,9 @@ public class ControllPanel extends JPanel {
 				if(!text.equals(" ")) {
 					appendTextToConsol("<<" + text);
 					textField.setText("");
+					
+					window.writeLine(text);
+					
 				}
 			}
 		});
@@ -71,6 +74,15 @@ public class ControllPanel extends JPanel {
 		JLabel lblAngle = new JLabel("angle:");
 		
 		JButton btnTurn = new JButton("turn");
+		btnTurn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				appendTextToConsol("Servo will turn about: " + getAngle());
+				
+				String line = Protocol.SERVO + getAngle();
+				window.writeLine(line);
+				
+			}
+		});
 		
 		JLabel lblLed = new JLabel("led:");
 		
@@ -81,6 +93,15 @@ public class ControllPanel extends JPanel {
 		JButton btnOn = new JButton("on");
 		
 		JButton btnNewButton = new JButton("detect");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				appendTextToConsol("Detection: ON...");
+				
+				
+				String line = Protocol.DETECT;
+				window.writeLine(line);
+			}
+		});
 		
 		JButton button = new JButton("<<back");
 		button.addActionListener(new ActionListener() {
@@ -178,7 +199,11 @@ public class ControllPanel extends JPanel {
 		this.angleVerriable.setText(value + "");
 	}
 	
+	public int getAngle() {
+		return Integer.parseInt(angleVerriable.getText());
+	}
+	
 	public void appendTextToConsol(String line) {
-		this.textArea.append(line);
+		this.textArea.append(line+"\n");
 	}
 }
