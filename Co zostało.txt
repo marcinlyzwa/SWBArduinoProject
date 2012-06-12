@@ -1,36 +1,36 @@
-Obs³uga serwa
-- wymyœliæ komunikat
-- obs³uga komunikatów po stronie Arduino w loop()
-- reset po³o¿enia serwa na Game Over
+ObsÅ‚uga serwa +
++ wymyÅ›liÄ‡ komunikat ["SERVO 15"]
++ obsÅ‚uga komunikatÃ³w po stronie Arduino w loop()
++ reset poÅ‚oÅ¼enia serwa na Game Over
 
-Obs³uga diody
-- wykrywaæ rosn¹cy licznik po stronie Arduino w loop()
+ObsÅ‚uga diody
+- wykrywaÄ‡ rosnÄ…cy licznik po stronie Arduino w loop()
 - metoda zapalania i gaszenia diody po stronie Arduino
 
-Wymyœliæ obs³ugê rozpoczêcia gry
-- tak ¿eby nie da³o siê w³¹czyæ gry bez pod³¹czonego kompa
-- np. program Javowy po wybraniu portu COM wysy³a komunikat do Arduino, 
-  ¿e jest gotowy - Arduino dopiero zaczyna swoj¹ pracê. 
-  (u¿yæ readLine() w setup)
+WymyÅ›liÄ‡ obsÅ‚ugÄ™ rozpoczÄ™cia gry
+- tak Å¼eby nie daÅ‚o siÄ™ wÅ‚Ä…czyÄ‡ gry bez podÅ‚Ä…czonego kompa
+- np. program Javowy po wybraniu portu COM wysyÅ‚a komunikat do Arduino, 
+  Å¼e jest gotowy - Arduino dopiero zaczyna swojÄ… pracÄ™. 
+  (uÅ¼yÄ‡ readLine() w setup)
 
 Java, GUI - gra
-- Wybór portu COM
-- zdarzeniowa obs³uga licznika w grze
-- timer - wyœwietlanie i komunikaty do Arduino
-- mo¿na pomyœleæ o czymœ takim jak dioda z Arduino w oknie gry (t³o, ikona)
-- opcja wyjœcia z gry przed zakoñczeniem czasu?
+- WybÃ³r portu COM
+- zdarzeniowa obsÅ‚uga licznika w grze
+- timer - wyÅ›wietlanie i komunikaty do Arduino
+- moÅ¼na pomyÅ›leÄ‡ o czymÅ› takim jak dioda z Arduino w oknie gry (tÅ‚o, ikona)
+- opcja wyjÅ›cia z gry przed zakoÅ„czeniem czasu?
 
-Trzeba pamiêtaæ o synchronizacji w¹tków, które wysy³aj¹ komunikaty do Arduino
+Trzeba pamiÄ™taÄ‡ o synchronizacji wÄ…tkÃ³w, ktÃ³re wysyÅ‚ajÄ… komunikaty do Arduino
 (timer i update licznika gry)!!
 
-Wymyœliæ jak przechodzimy do panelu kontrolnego
+WymyÅ›liÄ‡ jak przechodzimy do panelu kontrolnego
 
-Protokó³ panelu kontrolnego
-- ustaliæ komunikaty dla wszystkich akcji
-- ogólny sposób przesy³ania komunikatów z Javy
-- poszczególne metody dla ka¿dego komunikatu
-- obs³uga komunikatów po stronie Arduino
+ProtokÃ³Å‚ panelu kontrolnego
+- ustaliÄ‡ komunikaty dla wszystkich akcji
+- ogÃ³lny sposÃ³b przesyÅ‚ania komunikatÃ³w z Javy
+- poszczegÃ³lne metody dla kaÅ¼dego komunikatu
+- obsÅ‚uga komunikatÃ³w po stronie Arduino
 
 Java, GUI - panel kontrolny
-- podpi¹æ kontrolki do poszczególnych metod
-- obs³uga powrotu do gry
+- podpiÄ…Ä‡ kontrolki do poszczegÃ³lnych metod
+- obsÅ‚uga powrotu do gry
