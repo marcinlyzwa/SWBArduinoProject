@@ -26,13 +26,13 @@ void setup() {
   servo.write(0);
   // LCD Screen
   lcd.begin(16,2);
-  
+
   // Initiating connection with PC
   lcd.clear();
   lcd.print(" Waiting for a  ");
   lcd.setCursor(0,1);
   lcd.print(" USB connection ");
-  
+
   readLine(napis);
   while(!isConnOpening(napis))
     readLine(napis);
@@ -45,13 +45,13 @@ void setup() {
   delay(2000);
 
   attachInterrupt(0, guzik, FALLING);
-  
+
   lcd.clear();
   startNewGame();
 }
 
 void loop() {
-  readLine(napis);  
+  readLine(napis);
 
   if (isGameOver(napis)) {
     servo.write(0);
@@ -61,12 +61,12 @@ void loop() {
     readLine(napis);
     lcd.print(napis);
 
-    lcd.setCursor(0,1);    
+    lcd.setCursor(0,1);
     startNewGame();
-  } 
+  }
   else if (isSerwoOrder(napis)) {
     servo.write(extractServoValue(napis));
-  } 
+  }
   else {
     vals[3] = vals[2];
     vals[2] = vals[1];
@@ -109,7 +109,7 @@ void waitForWave(){
     volts = analogRead(A5);
     if (volts < border)
       wave = true;
-  }  
+  }
 }
 
 void readLine(char * napis) {
@@ -138,7 +138,7 @@ boolean compareStrings(char * strA, char * strB, int length) {
 
 boolean isConnOpening(char * napis) {
   char napisOpening[9] = {
-    'G', 'R', 'E', 'E', 'T', 'I', 'N', 'G', 'S'
+    'G','R','E','E','T','I','N','G','S'
   };
   return compareStrings(napisOpening, napis, 9);
 }
@@ -152,7 +152,7 @@ boolean isGameOver(char * napis) {
 
 boolean isSerwoOrder(char * napis) {
   char napisSerwo[6] = {
-    'S', 'E', 'R', 'V', 'O', ' ' 
+    'S','E','R','V','O','_'
   };
   return compareStrings(napisSerwo, napis, 6);
 }
@@ -171,4 +171,3 @@ int extractValue(char * napis) {
 int extractServoValue(char * napis) {
   return extractValue(& napis[6]);
 }
-
