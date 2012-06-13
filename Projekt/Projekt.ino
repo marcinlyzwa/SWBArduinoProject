@@ -145,7 +145,7 @@ boolean isConnOpening(char * napis) {
 
 boolean isGameOver(char * napis) {
   char napisOver[4] = {
-    'O', 'V', 'E', 'R'
+    'G','A','M','E','_','O','V','E','R'
   };
   return compareStrings(napisOver, napis, 4);
 }
