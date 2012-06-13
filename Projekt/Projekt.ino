@@ -16,27 +16,23 @@ void setup() {
   // Hardware init
   // USB/COM
   Serial.begin(9600);
-<<<<<<< HEAD
   // Diode
   pinMode(13, OUTPUT);
   // Button
   pinMode(A0, INPUT);
   // Servo timer
-=======
-  
->>>>>>> parent of 8e01450... Obsługa serva po stronie Arduino
   pinMode(11, OUTPUT);
   servo.attach(11);
   servo.write(0);
   // LCD Screen
   lcd.begin(16,2);
-  
+
   // Initiating connection with PC
   lcd.clear();
   lcd.print(" Waiting for a  ");
   lcd.setCursor(0,1);
   lcd.print(" USB connection ");
-  
+
   readLine(napis);
   while(!isConnOpening(napis))
     readLine(napis);
@@ -49,13 +45,13 @@ void setup() {
   delay(2000);
 
   attachInterrupt(0, guzik, FALLING);
-  
+
   lcd.clear();
   startNewGame();
 }
 
 void loop() {
-  readLine(napis);  
+  readLine(napis);
 
   if (isGameOver(napis)) {
     servo.write(0);
@@ -65,12 +61,12 @@ void loop() {
     readLine(napis);
     lcd.print(napis);
 
-    lcd.setCursor(0,1);    
+    lcd.setCursor(0,1);
     startNewGame();
-  } 
+  }
   else if (isSerwoOrder(napis)) {
-    
-  } 
+    servo.write(extractServoValue(napis));
+  }
   else {
     vals[3] = vals[2];
     vals[2] = vals[1];
@@ -113,7 +109,7 @@ void waitForWave(){
     volts = analogRead(A5);
     if (volts < border)
       wave = true;
-  }  
+  }
 }
 
 void readLine(char * napis) {
@@ -142,22 +138,21 @@ boolean compareStrings(char * strA, char * strB, int length) {
 
 boolean isConnOpening(char * napis) {
   char napisOpening[9] = {
-    'G', 'R', 'E', 'E', 'T', 'I', 'N', 'G', 'S'
+    'G','R','E','E','T','I','N','G','S'
   };
   return compareStrings(napisOpening, napis, 9);
 }
 
 boolean isGameOver(char * napis) {
   char napisOver[4] = {
-<<<<<<< HEAD
-    'O', 'V', 'E', 'R'
+    'G','A','M','E','_','O','V','E','R'
   };
   return compareStrings(napisOver, napis, 4);
 }
 
 boolean isSerwoOrder(char * napis) {
   char napisSerwo[6] = {
-    'S', 'E', 'R', 'V', 'O', ' ' 
+    'S','E','R','V','O','_'
   };
   return compareStrings(napisSerwo, napis, 6);
 }
@@ -176,15 +171,3 @@ int extractValue(char * napis) {
 int extractServoValue(char * napis) {
   return extractValue(& napis[6]);
 }
-
-=======
-    'O', 'V', 'E', 'R'      };
-  boolean over = true;
-
-  for (int i = 0; i<4; i++)
-    over = over && napis[i] == napisOver[i];
-
-  return over;
-}
-
->>>>>>> parent of 8e01450... Obsługa serva po stronie Arduino
