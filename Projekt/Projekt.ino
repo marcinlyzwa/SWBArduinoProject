@@ -1,10 +1,15 @@
 #include <LiquidCrystal.h>
 #include <Servo.h>
 
+#define START_STATE 0
+#define GAME_STATE 1
+#define PANEL_STATE 2
+
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 Servo servo;
 char napis[16];
 int vals[4] = {0, 0, 0, 0};
+int state = START_STATE;
 
 
 void guzik() {
@@ -51,6 +56,21 @@ void setup() {
 }
 
 void loop() {
+  switch (state) {
+    case GAME_STATE:
+      gameLoop();
+      break;
+    case PANEL_STATE:
+      panelLoop();
+      break;
+    default:
+      lcd.clear();
+      lcd.print("Zgubilem sie...");
+  }
+}
+
+
+void gameLoop() {
   readLine(napis);
 
   if (isGameOver(napis)) {
@@ -81,6 +101,10 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print(napis);
   }
+}
+
+
+void panelLoop() {
 }
 
 
@@ -144,7 +168,7 @@ boolean isConnOpening(char * napis) {
 }
 
 boolean isGameOver(char * napis) {
-  char napisOver[4] = {
+  char napisOver[9] = {
     'G','A','M','E','_','O','V','E','R'
   };
   return compareStrings(napisOver, napis, 4);

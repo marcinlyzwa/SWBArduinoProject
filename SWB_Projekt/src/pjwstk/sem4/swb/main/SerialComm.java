@@ -1,4 +1,4 @@
-package pjwstk.swb.projekt;
+package pjwstk.sem4.swb.main;
 
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
@@ -11,15 +11,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
+ * 
+ * Based on example from RxTx web site.
+ * 
  * This version of the TwoWaySerialComm example makes use of the
  * SerialPortEventListener to avoid polling.
  * 
  */
-public class TwoWaySerialComm {
+public class SerialComm {
 	static OutputStream out;
+	static InputStream in;
 	static Integer counter = 0;
 
-	public TwoWaySerialComm() {
+	public SerialComm() {
 		super();
 	}
 
@@ -37,8 +41,8 @@ public class TwoWaySerialComm {
 				serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8,
 						SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
-				InputStream in = serialPort.getInputStream();
-				OutputStream out = serialPort.getOutputStream();
+				in = serialPort.getInputStream();
+				out = serialPort.getOutputStream();
 
 				(new Thread(new SerialWriter(out))).start();
 
@@ -77,13 +81,7 @@ public class TwoWaySerialComm {
 				}
 
 				String komunikat = new String(buffer, 0, len);
-				if (komunikat.equals("GUZIK!")) {
-					counter--;
-					TwoWaySerialComm.out.write((counter.toString() + "\n")
-							.getBytes());
-					System.out.println((counter).toString() + "\n");
-				}
-
+				//PARSOWANIE TEGO CO PRZYCHODZI.
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
@@ -96,45 +94,47 @@ public class TwoWaySerialComm {
 	public static class SerialWriter implements Runnable {
 
 		public SerialWriter(OutputStream out) {
-			TwoWaySerialComm.out = out;
+			SerialComm.out = out;
 		}
 
 		public void run() {
-			while (true) {
-				for (int i = 0; i < 3; ++i)
-					try {
-						int in = System.in.read();
-						if (in == '\n') {
-							++counter;
-							TwoWaySerialComm.out
-									.write((counter.toString() + "\n")
-											.getBytes());
-							System.out.println((counter).toString() + "\n");
-							Thread.sleep(100);
-						}
-					} catch (IOException | InterruptedException e) {
-						e.printStackTrace();
-						System.exit(-1);
-					}
-				try {
-					TwoWaySerialComm.out.write(("OVER\n").getBytes());
-					System.out.println("OVER");
-					TwoWaySerialComm.out.write(("You lose!!!\n").getBytes());
-					System.out.println("You lose!!!");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+//			while (true) {
+//				for (int i = 0; i < 3; ++i)
+//					try {
+//						int in = System.in.read();
+//						if (in == '\n') {
+//							++counter;
+//							TwoWaySerialComm.out
+//									.write((counter.toString() + "\n")
+//											.getBytes());
+//							System.out.println((counter).toString() + "\n");
+//							Thread.sleep(100);
+//						}
+//					} catch (IOException | InterruptedException e) {
+//						e.printStackTrace();
+//						System.exit(-1);
+//					}
+//				try {
+//					TwoWaySerialComm.out.write(("OVER\n").getBytes());
+//					System.out.println("OVER");
+//					TwoWaySerialComm.out.write(("You lose!!!\n").getBytes());
+//					System.out.println("You lose!!!");
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
 		}
-	}
-
-	public static void main(String[] args) {
-		try {
-			(new TwoWaySerialComm()).connect("COM20");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		public static void write(String line) {
+			System.out.println("##### wysylam: " + line + " #####");
+//			try {
+////				TwoWaySerialComm.out.write(line.getBytes());
+//			} catch (IOException e) {
+//				System.err.println("##### Error occured ! Sending message failed. #####");
+//				e.printStackTrace();
+//			}
 		}
+		
 	}
-
+	
 }

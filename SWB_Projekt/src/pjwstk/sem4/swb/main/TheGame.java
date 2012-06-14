@@ -1,6 +1,6 @@
 package pjwstk.sem4.swb.main;
 
-public class Main {
+public class TheGame {
 	
 	
 	
@@ -18,7 +18,7 @@ public class Main {
 //			System.exit(-1);
 //		}
 		
-		Window window = new Window();
+		MainWindow window = new MainWindow();
 		window.createHelloWindow();
 		window.setVisible(true);
 	}

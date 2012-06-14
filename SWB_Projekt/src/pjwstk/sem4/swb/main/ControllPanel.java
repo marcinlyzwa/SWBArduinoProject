@@ -21,7 +21,7 @@ public class ControllPanel extends JPanel {
 	/**
 	 * 
 	 */
-	private Window window = null;
+	private MainWindow window = null;
 	
 	private static final long serialVersionUID = 1L;
 	private JSlider slider = null;
@@ -32,7 +32,7 @@ public class ControllPanel extends JPanel {
 	 * Create the panel.
 	 * @param window 
 	 */
-	public ControllPanel(final Window window) {
+	public ControllPanel(final MainWindow window) {
 		this.window = window;
 		
 		JLabel lblConsol = new JLabel("consol:");
