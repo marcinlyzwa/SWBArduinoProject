@@ -9,19 +9,15 @@ import gnu.io.SerialPortEventListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Observable;
 
 /**
- * 
  * Based on example from RxTx web site.
- * 
- * This version of the TwoWaySerialComm example makes use of the
- * SerialPortEventListener to avoid polling.
- * 
  */
-public class SerialComm {
-	static OutputStream out;
-	static InputStream in;
-	static Integer counter = 0;
+public class SerialComm extends Observable implements SerialPortEventListener {
+	private OutputStream out;
+	private InputStream in;
+	private byte[] buffer = new byte[1024];
 
 	public SerialComm() {
 		super();
@@ -31,7 +27,7 @@ public class SerialComm {
 		CommPortIdentifier portIdentifier = CommPortIdentifier
 				.getPortIdentifier(portName);
 		if (portIdentifier.isCurrentlyOwned()) {
-			System.out.println("Error: Port is currently in use");
+			throw new Exception("Port is currently in use");
 		} else {
 			CommPort commPort = portIdentifier.open(this.getClass().getName(),
 					2000);
@@ -44,97 +40,67 @@ public class SerialComm {
 				in = serialPort.getInputStream();
 				out = serialPort.getOutputStream();
 
-				(new Thread(new SerialWriter(out))).start();
-
-				serialPort.addEventListener(new SerialReader(in));
+				serialPort.addEventListener(this);
 				serialPort.notifyOnDataAvailable(true);
 
 			} else {
-				System.out
-						.println("Error: Only serial ports are handled by this example.");
+				throw new Exception(
+						"Only serial ports are handled by this program");
 			}
 		}
 	}
 
-	/**
-	 * Handles the input coming from the serial port. A new line character is
-	 * treated as the end of a block in this example.
-	 */
-	public static class SerialReader implements SerialPortEventListener {
-		private InputStream in;
-		private byte[] buffer = new byte[1024];
+	public void serialEvent(SerialPortEvent arg0) {
+		int data;
 
-		public SerialReader(InputStream in) {
-			this.in = in;
-		}
-
-		public void serialEvent(SerialPortEvent arg0) {
-			int data;
-
-			try {
-				int len = 0;
-				while ((data = in.read()) > -1) {
-					if (data == '\n') {
-						break;
-					}
-					buffer[len++] = (byte) data;
+		try {
+			int len = 0;
+			while ((data = in.read()) > -1) {
+				if (data == '\n') {
+					break;
 				}
-
-				String komunikat = new String(buffer, 0, len);
-				//PARSOWANIE TEGO CO PRZYCHODZI.
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(-1);
+				buffer[len++] = (byte) data;
 			}
-		}
 
-	}
-
-	/** */
-	public static class SerialWriter implements Runnable {
-
-		public SerialWriter(OutputStream out) {
-			SerialComm.out = out;
+			setChanged();
+			notifyObservers(new String(buffer, 0, len));
+		} catch (IOException e) {
+			setChanged();
+			notifyObservers(e);
 		}
-
-		public void run() {
-//			while (true) {
-//				for (int i = 0; i < 3; ++i)
-//					try {
-//						int in = System.in.read();
-//						if (in == '\n') {
-//							++counter;
-//							TwoWaySerialComm.out
-//									.write((counter.toString() + "\n")
-//											.getBytes());
-//							System.out.println((counter).toString() + "\n");
-//							Thread.sleep(100);
-//						}
-//					} catch (IOException | InterruptedException e) {
-//						e.printStackTrace();
-//						System.exit(-1);
-//					}
-//				try {
-//					TwoWaySerialComm.out.write(("OVER\n").getBytes());
-//					System.out.println("OVER");
-//					TwoWaySerialComm.out.write(("You lose!!!\n").getBytes());
-//					System.out.println("You lose!!!");
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-		}
-		
-		public static void write(String line) {
-			System.out.println("##### wysylam: " + line + " #####");
-//			try {
-////				TwoWaySerialComm.out.write(line.getBytes());
-//			} catch (IOException e) {
-//				System.err.println("##### Error occured ! Sending message failed. #####");
-//				e.printStackTrace();
-//			}
-		}
-		
 	}
 	
+	public void print(String command) throws IOException {
+		out.write(command.getBytes());
+	}
+	
+	public void println(String command) throws IOException {
+		print(command + '\n');
+	}
+
+	// while (true) {
+	// for (int i = 0; i < 3; ++i)
+	// try {
+	// int in = System.in.read();
+	// if (in == '\n') {
+	// ++counter;
+	// TwoWaySerialComm.out
+	// .write((counter.toString() + "\n")
+	// .getBytes());
+	// System.out.println((counter).toString() + "\n");
+	// Thread.sleep(100);
+	// }
+	// } catch (IOException | InterruptedException e) {
+	// e.printStackTrace();
+	// System.exit(-1);
+	// }
+	// try {
+	// TwoWaySerialComm.out.write(("OVER\n").getBytes());
+	// System.out.println("OVER");
+	// TwoWaySerialComm.out.write(("You lose!!!\n").getBytes());
+	// System.out.println("You lose!!!");
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// }
 }

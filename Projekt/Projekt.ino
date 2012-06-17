@@ -10,6 +10,7 @@ Servo servo;
 char napis[16];
 int vals[4] = {0, 0, 0, 0};
 int state = START_STATE;
+int oldState = state;
 
 
 void guzik() {
@@ -39,10 +40,31 @@ void setup() {
   lcd.print(" USB connection ");
 
   readLine(napis);
-  while(!isConnOpening(napis))
+  while(!isStartScreenMessage(napis))
     readLine(napis);
 
   // Starting the main program
+  initGameState();
+}
+
+void loop() {
+  switch (state) {
+    case GAME_STATE:
+      if (oldState != GAME_STATE)
+        initGameState();
+      gameLoop();
+      break;
+    case PANEL_STATE:
+      panelLoop();
+      break;
+    default:
+      error();
+  }
+  oldState = state;
+}
+
+
+void initGameState() {
   lcd.clear();
   lcd.print("    The Game    ");
   lcd.setCursor(0,1);
@@ -55,21 +77,6 @@ void setup() {
   startNewGame();
 }
 
-void loop() {
-  switch (state) {
-    case GAME_STATE:
-      gameLoop();
-      break;
-    case PANEL_STATE:
-      panelLoop();
-      break;
-    default:
-      lcd.clear();
-      lcd.print("Zgubilem sie...");
-  }
-}
-
-
 void gameLoop() {
   readLine(napis);
 
@@ -80,9 +87,17 @@ void gameLoop() {
     lcd.setCursor(0,0);
     readLine(napis);
     lcd.print(napis);
-
-    lcd.setCursor(0,1);
-    startNewGame();
+    
+    readLine(napis);
+    if (isStartScreenMessage(napis)) {
+      state = START_STATE;
+      // TODO
+    } else if (isGameOnMessage(napis)) {
+      lcd.setCursor(0,1);
+      startNewGame();
+    } else {
+      error();
+    }
   }
   else if (isSerwoOrder(napis)) {
     servo.write(extractServoValue(napis));
@@ -160,18 +175,23 @@ boolean compareStrings(char * strA, char * strB, int length) {
   return equal;
 }
 
-boolean isConnOpening(char * napis) {
-  char napisOpening[9] = {
-    'G','R','E','E','T','I','N','G','S'
+boolean isStartScreenMessage(char * napis) {
+  char napisOpening[12] = {
+    'S','T','A','R','T','_','S','C','R','E','E','N'
   };
-  return compareStrings(napisOpening, napis, 9);
+  return compareStrings(napisOpening, napis, 12);
+}
+
+boolean isGameOnMessage(char * napis) {
+  // TODO
+  return true;
 }
 
 boolean isGameOver(char * napis) {
   char napisOver[9] = {
     'G','A','M','E','_','O','V','E','R'
   };
-  return compareStrings(napisOver, napis, 4);
+  return compareStrings(napisOver, napis, 9);
 }
 
 boolean isSerwoOrder(char * napis) {
@@ -194,4 +214,9 @@ int extractValue(char * napis) {
 
 int extractServoValue(char * napis) {
   return extractValue(& napis[6]);
+}
+
+void error() {
+  lcd.clear();
+  lcd.print("Zgubilem sie...");
 }
